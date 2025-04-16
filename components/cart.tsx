@@ -3,24 +3,24 @@
 import { useCart } from "@/lib/cart-context"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { ShoppingCart, Trash2 } from "lucide-react"
+import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
 
 export default function Cart() {
-  const { items, removeFromCart, clearCart, totalPrice } = useCart()
+  const { items, removeFromCart, clearCart, totalPrice, incrementQuantity, decrementQuantity } = useCart()
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="relative bg-white">
+        <Button variant="outline" size="icon" className="relative">
           <ShoppingCart className="h-5 w-5 text-[#212A31]" />
           {items.length > 0 && (
             <span className="absolute -top-2 -right-2 bg-[#212A31] text-[#D3D9D4] text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              {items.length}
+              {items.reduce((total, item) => total + item.quantity, 0)}
             </span>
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-md bg-white">
+      <SheetContent className="w-full sm:max-w-md">
         <SheetHeader>
           <SheetTitle>Your Cart</SheetTitle>
         </SheetHeader>
@@ -33,15 +33,41 @@ export default function Cart() {
               <div className="space-y-4 mb-6">
                 {items.map((item) => (
                   <div key={item.id} className="flex items-center justify-between gap-4 border-b pb-3">
-                    <div>
+                    <div className="flex-grow">
                       <h4 className="font-medium">{item.name}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        ₹{item.price.toFixed(2)} x {item.quantity}
-                      </p>
+                      <p className="text-sm text-muted-foreground">₹{item.price.toFixed(2)}</p>
+                      <div className="flex items-center mt-2">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-6 w-6 rounded-md p-0"
+                          onClick={() => decrementQuantity(item.id)}
+                          disabled={item.quantity <= 1}
+                        >
+                          <Minus className="h-3 w-3" />
+                        </Button>
+                        <span className="mx-2 text-sm font-medium">{item.quantity}</span>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-6 w-6 rounded-md p-0"
+                          onClick={() => incrementQuantity(item.id)}
+                        >
+                          <Plus className="h-3 w-3" />
+                        </Button>
+                      </div>
                     </div>
-                    <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.id)}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <div className="text-right">
+                      <p className="font-medium">₹{(item.price * item.quantity).toFixed(2)}</p>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeFromCart(item.id)}
+                        className="mt-1 h-7 w-7"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
