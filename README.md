@@ -2,6 +2,8 @@
 ---
 Welcome to the CocoShop project—a modern e-commerce web application built with Next.js and styled using Tailwind CSS. This README will guide you through setting up the project, installing dependencies, and running the development server.
 
+<img width="1208" alt="Screenshot 2025-04-16 at 3 52 28 PM" src="https://github.com/user-attachments/assets/eb297bcb-169f-473d-995e-1c71688ff70f" />
+
 ## 🚀 Getting Started
 
 **1. Clone the Repository**
