@@ -9,7 +9,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 interface User {
   id: string;
   name: string;
@@ -50,7 +50,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const response = await axios.post("http://localhost:4000/api/users/login", {
+      // const response = await axios.post("http://localhost:4000/api/users/login", {
+        const response = await axios.post(`${apiUrl}/api/users/login`, {
         email,
         password,
       });
@@ -81,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signup = async (name: string, email: string, password: string) => {
     setIsLoading(true);
     try {
-      const response = await axios.post("http://localhost:4000/api/users/signup", {
+      const response = await axios.post(`${apiUrl}/api/users/signup`, {
         name,
         email,
         password,

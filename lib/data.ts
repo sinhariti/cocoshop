@@ -1,8 +1,9 @@
 // lib/data.ts
 import type { Product } from "./types"
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getProducts(): Promise<Product[]> {
-  const res = await fetch("http://localhost:4000/api/products", {
+  const res = await fetch(`${apiUrl}/api/products`, {
     cache: "no-store", // Disable caching for real-time fetching
   });
 
@@ -27,7 +28,7 @@ export async function getRecommendedProducts(): Promise<{
   mostPurchased: Product[],
   recentlyPurchased: Product[]
 }> {
-  const res = await fetch("http://localhost:4000/api/recommendations/", {
+  const res = await fetch(`${apiUrl}/api/recommendations/`, {
     cache: "no-store",
   });
 
