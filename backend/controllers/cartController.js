@@ -1,14 +1,16 @@
 const CartItem = require('../models/CartItem');
 const Product = require('../models/Product');
 
+//done
 const addToCart = async (req, res) => {
   try {
+    console.log("✅ /api/cart/add route hit");
     const userID = req.userID;
     const { productID, quantity } = req.body;
-
+   
     let item = await CartItem.findOne({ userID, productID });
-
-    const product = await Product.findOne({ productID });
+    
+    const product = await Product.findById( productID );
     if (!product) {
         return res.status(404).json({ message: 'Product not found' });
     }
@@ -32,15 +34,17 @@ const addToCart = async (req, res) => {
 };
 
 const updateCartItem = async (req, res) => {
+  console.log("✅ /api/cart/update route hit");
   try {
     const userID = req.userID;
     const { productID, quantity } = req.body;
-    const updated = await CartItem.findOneAndUpdate(
-      { userID, productID },
-      { quantity },
-      { new: true }
+    const updated = await CartItem.findByIdAndUpdate(
+      productID,               // this is the ObjectId of the CartItem
+      { $set: { quantity } },  // update
+      { new: true }            // return updated doc
     );
-
+    
+    console.log(updated);
     if (!updated) return res.status(404).json({ message: 'Item not found in cart' });
     res.json(updated);
   } catch (err) {
