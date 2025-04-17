@@ -18,6 +18,7 @@ const createProduct = async (req, res) => {
 
 // READ ALL
 const getAllProducts = async (req, res) => {
+  console.log('Fetching all products');
   try {
     const products = await Product.find();
     res.json(products);
